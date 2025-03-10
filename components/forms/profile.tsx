@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { EditProfilePayload, EditProfileSchema } from "@/schema/edit-profile";
 import { editProfile } from "@/actions/edit-profile";
 import { useSession } from "next-auth/react";
+import {ClipLoader} from "react-spinners"
 
 
  
@@ -88,7 +89,7 @@ const EditProfileForm = () => {
                         )}
                     />
 
-                <Button className="w-full" disabled={isPending}>Save Changes</Button>
+                <Button className="w-full" disabled={isPending}>{isPending ? <div className="flex gap-2 items-center"><ClipLoader size={15} /> Saving Changes... </div> : "Save Changes"}</Button>
         </form>
 
     </Form> );

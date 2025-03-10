@@ -13,6 +13,7 @@ import { useTransition } from "react";
 import { createAccount } from "@/actions/create-account";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
+import { ClipLoader } from "react-spinners";
 function SignUpForm() {
     const searchParams = useSearchParams()
 
@@ -36,7 +37,10 @@ function SignUpForm() {
         startTransition(() => { 
             createAccount(values).then((data) => { 
                 if (data.error) return toast(data.error)
-                if (data.success) return toast(data.success)
+                if (data.success) {
+                    toast(data.success)
+                    form.reset()
+                }
 
             })
         })
@@ -119,7 +123,7 @@ function SignUpForm() {
                     
                 )}
             />
-            <Button className="w-full" disabled={isPending}>{isPending ? "Signing up ...": "Sign up"}</Button>
+            <Button className="w-full" disabled={isPending}>{isPending ? <div className="flex gap-2 items-center"><ClipLoader size={15} /> Signing up... </div> : "Sign up"}</Button>
             {error && <div className="text-center text-sm text-red-400">Account already exist</div>}
             <OauthButtons />
             

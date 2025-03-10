@@ -14,6 +14,7 @@ import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import ForgetPasswordForm from "./forgetpassword";
+import { ClipLoader } from "react-spinners";
 function SignInForm() {
 
 
@@ -99,7 +100,7 @@ function SignInForm() {
                     
                 )}
             />
-            <Button className="w-full" disabled={isPending}>{ isPending ? "Signing in ...": "Sign in"}</Button>
+            <Button className="w-full" disabled={isPending}>{isPending ? <div className="flex items-center gap-2"><ClipLoader size={15} /> Signing in... </div> : "Sign in"}</Button>
             {error && <div className="text-center text-sm text-red-400">Account already exist</div>}
             <OauthButtons />
             

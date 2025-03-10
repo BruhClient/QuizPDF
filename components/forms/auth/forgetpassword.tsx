@@ -17,6 +17,7 @@ import ChangePasswordForm from "./changepassword";
 import { sendPasswordResetVerification } from "@/actions/send-password-reset-verification";
 import { toast } from "sonner";
 import { verifyPasswordResetCode } from "@/actions/verify-password-reset-code";
+import { ClipLoader } from "react-spinners";
 
  
 const ForgetPasswordForm = ({back} : {back : () => void}) => {
@@ -138,7 +139,7 @@ const ForgetPasswordForm = ({back} : {back : () => void}) => {
                         
                     )}
                 />
-                <Button onClick={() => onSubmit(form.getValues())} disabled={isPending}>Send Verification Email</Button>
+                <Button onClick={() => onSubmit(form.getValues())} disabled={isPending}>{isPending ? <div className="flex gap-2 items-center"><ClipLoader size={15} /> Sending Verification Email... </div> : "Send Verfication Email"}</Button>
             </>
                 )
             }

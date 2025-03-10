@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { changePassword } from "@/actions/change-password";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { ClipLoader } from "react-spinners";
 
 interface ChangePasswordFormProps {
     email : string , 
@@ -87,7 +88,7 @@ const ChangePasswordForm: FunctionComponent<ChangePasswordFormProps> = ({email})
                         )}
                     />
 
-                <Button className="w-full" disabled={isPending}>Change Password</Button>
+                <Button className="w-full" disabled={isPending}>{isPending ? <div className="flex gap-2 items-center"><ClipLoader size={15}/> Changing Password </div> : "Change Password"}</Button>
         </form>
 
     </Form> );
