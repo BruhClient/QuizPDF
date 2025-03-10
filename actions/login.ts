@@ -6,7 +6,8 @@ import { getUserByEmail } from "@/lib/users"
 import { generateVerificationToken } from "@/lib/verification-token"
 import { SignInPayload, SignInSchema } from "@/schema/signin"
 import { AuthError } from "next-auth"
-import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
+
 
 export const login = async (data : SignInPayload ) => {
     
@@ -51,10 +52,14 @@ export const login = async (data : SignInPayload ) => {
         await signIn("credentials" , { 
             email , 
             password,
-            redirect : false
+            redirect : false , 
+            
             
 
         })
+
+
+        
 
         return { 
             success : "Successfully logged in"

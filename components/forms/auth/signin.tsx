@@ -33,20 +33,16 @@ function SignInForm() {
     const searchParams = useSearchParams()
 
     const error = searchParams.get("error")
-
+    
     const onSubmit = (values : SignInPayload) => {
 
         startTransition(() => { 
             login(values).then((data)  => { 
-                if (data.success) {
-                    toast(data.success)
-                    update()
-                    router.back()
-                    
-                    
-                }
+                
                 if (data.error) toast(data.error)
                 
+                
+               if (data.success) window.location.href = "/dashboard"
                 
                         
                 
