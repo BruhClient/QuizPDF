@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { verifyPasswordResetCode } from "@/actions/verify-password-reset-code";
 
  
-const ForgetPasswordForm = () => {
+const ForgetPasswordForm = ({back} : {back : () => void}) => {
 
     const [isVerified,setIsVerified] = useState(false)
     const form = useForm<ResetPasswordPayload>({ 
@@ -147,8 +147,8 @@ const ForgetPasswordForm = () => {
            
            
             
-
-            <Button type="button" variant={"link"} asChild><Link href={"/signup"}>Don't have an account ? Sign up</Link></Button>
+            <Button type="button" variant={"link"} onClick={() => back()}>Back to sign up</Button>
+            
         </form>
     </Form> 
     

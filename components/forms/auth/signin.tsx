@@ -60,7 +60,7 @@ function SignInForm() {
     }
 
     if (isResettingPassword) { 
-        return <ForgetPasswordForm />
+        return <ForgetPasswordForm back={() => setIsResettingPassword(false)} />
     }
     return ( 
     
