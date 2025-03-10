@@ -76,7 +76,7 @@ const EditProfileForm = () => {
                                     Email
                                 </FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="jsmith@gmail.com"/>
+                                    <Input {...field} placeholder="jsmith@gmail.com" disabled={session?.user.isOauth}/>
                                     
                                 </FormControl>
                             
