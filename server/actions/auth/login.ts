@@ -1,9 +1,9 @@
 "use server"
 
 import { signIn } from "@/lib/auth"
-import { sendVerificationEmail } from "@/lib/mail"
-import { getUserByEmail } from "@/lib/users"
-import { generateVerificationToken } from "@/lib/verification-token"
+import { sendVerificationEmail } from "@/server/db/mail"
+import { getUserByEmail } from "@/server/db/users"
+import { generateVerificationToken } from "@/server/db/verification-token"
 import { SignInPayload, SignInSchema } from "@/schema/signin"
 import { AuthError } from "next-auth"
 import { redirect } from "next/navigation"

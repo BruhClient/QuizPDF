@@ -1,10 +1,10 @@
 "use server"
 
 import { auth } from "@/lib/auth"
-import { sendVerificationEmail } from "@/lib/mail"
+import { sendVerificationEmail } from "@/server/db/mail"
 import { prisma } from "@/lib/prisma"
-import { getUserByEmail, getUserByUsername } from "@/lib/users"
-import { generateVerificationToken } from "@/lib/verification-token"
+import { getUserByEmail, getUserByUsername } from "@/server/db/users"
+import { generateVerificationToken } from "@/server/db/verification-token"
 import { EditProfilePayload, EditProfileSchema } from "@/schema/edit-profile"
 
 export const editProfile = async (values : EditProfilePayload) => { 

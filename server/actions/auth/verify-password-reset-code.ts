@@ -1,6 +1,6 @@
 "use server"
 
-import { getPasswordResetTokenByEmail } from "@/lib/password-reset-token"
+import { getPasswordResetTokenByEmail } from "@/server/db/password-reset-token"
 import { prisma } from "@/lib/prisma"
 
 

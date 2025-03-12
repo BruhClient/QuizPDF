@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import OauthButtons from "@/components/auth/OauthButtons";
 import Link from "next/link";
-import { login } from "@/actions/login";
+import { login } from "@/server/actions/auth/login";
 import { toast } from "sonner";
 import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";

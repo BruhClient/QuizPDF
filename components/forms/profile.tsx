@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { EditProfilePayload, EditProfileSchema } from "@/schema/edit-profile";
-import { editProfile } from "@/actions/edit-profile";
+import { editProfile } from "@/server/actions/auth/edit-profile";
 import { useSession } from "next-auth/react";
 import {ClipLoader} from "react-spinners"
 

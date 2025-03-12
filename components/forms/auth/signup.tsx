@@ -10,10 +10,12 @@ import OauthButtons from "@/components/auth/OauthButtons";
 import Link from "next/link";
 import { SignUpPayload, SignUpSchema } from "@/schema/signup";
 import { useTransition } from "react";
-import { createAccount } from "@/actions/create-account";
+import { createAccount } from "@/server/actions/auth/create-account";
 import { toast } from "sonner";
 import { useSearchParams } from "next/navigation";
 import { ClipLoader } from "react-spinners";
+
+
 function SignUpForm() {
     const searchParams = useSearchParams()
 

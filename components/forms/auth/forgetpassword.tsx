@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { Form ,FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -14,9 +13,9 @@ import {
     InputOTPSlot,
   } from "@/components/ui/input-otp"
 import ChangePasswordForm from "./changepassword";
-import { sendPasswordResetVerification } from "@/actions/send-password-reset-verification";
+import { sendPasswordResetVerification } from "@/server/actions/auth/send-password-reset-verification";
 import { toast } from "sonner";
-import { verifyPasswordResetCode } from "@/actions/verify-password-reset-code";
+import { verifyPasswordResetCode } from "@/server/actions/auth/verify-password-reset-code";
 import { ClipLoader } from "react-spinners";
 
  

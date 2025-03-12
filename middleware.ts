@@ -49,12 +49,7 @@ export default auth((req) => {
             return NextResponse.next()
         }
         return NextResponse.redirect(new URL("/signup",nextUrl))
-    } else { 
-        if (!isLoggedIn) { 
-            return NextResponse.next()
-        }
-        return NextResponse.redirect(new URL("/dashboard",nextUrl))
-    }
+    } 
    
     
     

@@ -3,9 +3,9 @@ import { prisma } from "@/lib/prisma"
 import { SignUpSchema,SignUpPayload } from "@/schema/signup"
 import { z } from "zod"
 import bcryptjs from "bcryptjs"
-import { generateVerificationToken } from "@/lib/verification-token" 
-import { sendVerificationEmail } from "@/lib/mail"
-import { getUserByEmail, getUserByUsername } from "@/lib/users"
+import { generateVerificationToken } from "@/server/db/verification-token" 
+import { sendVerificationEmail } from "@/server/db/mail"
+import { getUserByEmail, getUserByUsername } from "@/server/db/users"
  
 
 export const createAccount = async (values : SignUpPayload) => { 

@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { sendVerificationEmail } from "@/lib/mail";
+import { sendVerificationEmail } from "@/server/db/mail";
 import { prisma } from "@/lib/prisma";
-import { getUserByEmail } from "@/lib/users";
-import { generateVerificationToken } from "@/lib/verification-token";
+import { getUserByEmail } from "@/server/db/users";
+import { generateVerificationToken } from "@/server/db/verification-token";
 import Link from "next/link";
 
 
