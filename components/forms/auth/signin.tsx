@@ -11,7 +11,7 @@ import Link from "next/link";
 import { login } from "@/server/actions/auth/login";
 import { toast } from "sonner";
 import { useState, useTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import ForgetPasswordForm from "./forgetpassword";
 import { ClipLoader } from "react-spinners";
@@ -30,7 +30,6 @@ function SignInForm() {
     })
     const {update} = useSession()
     const [isPending,startTransition] = useTransition()
-    const router = useRouter()
     const searchParams = useSearchParams()
 
     const error = searchParams.get("error")
