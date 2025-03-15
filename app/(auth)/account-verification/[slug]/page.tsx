@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { sendVerificationEmail } from "@/server/db/mail";
+import { sendVerificationEmail } from "@/server/db/auth/mail";
 import { prisma } from "@/lib/prisma";
-import { getUserByEmail } from "@/server/db/users";
-import { generateVerificationToken } from "@/server/db/verification-token";
+import { getUserByEmail, updateUserByEmail } from "@/server/db/users";
+import { deleteVerificationTokenById, generateVerificationToken, getVerificationTokenByToken } from "@/server/db/auth/verification-token";
 import Link from "next/link";
 
 
@@ -13,12 +13,9 @@ async function AccountVerificationPage({params} : {params : Promise<{slug : stri
     const param = await params
     const token = param.slug
 
-    const verificationToken = await prisma.verificationToken.findUnique({ 
-        where : { 
-            token 
-        }, 
-        
-    })
+    const verificationToken = await getVerificationTokenByToken(token)
+
+
 
     let isExpired = false
 
@@ -44,25 +41,14 @@ async function AccountVerificationPage({params} : {params : Promise<{slug : stri
             
             
             if (existingUser) { 
-                await prisma.user.update({ 
-                    where : { 
-                        id : existingUser.id
-                    }, 
-                    data: { 
-                        emailVerified : currentTime, 
-                        email : verificationToken.email
-                        
-        
-                    }
+                await updateUserByEmail(existingUser.email,{ 
+                    emailVerified : currentTime, 
+                    email : verificationToken.email
                 })
             }
             
-    
-            await prisma.verificationToken.delete({
-                where : { 
-                    id : verificationToken.id,
-                }
-            })
+            // Delete Verification Token 
+            await deleteVerificationTokenById(verificationToken.id)
         }
         
         

@@ -1,6 +1,6 @@
 "use server"
 
-import { prisma } from "@/lib/prisma"
+import { updateUserByEmail } from "@/server/db/users"
 import bcryptjs from "bcryptjs"
 
 
@@ -9,15 +9,11 @@ export const changePassword = async (email : string,password : string) => {
         const formattedEmail = email.toLowerCase()
         
         const hashedPassword = await bcryptjs.hash(password,4)
-        await prisma.user.update({ 
-            where : { 
-                email : formattedEmail
-            }, 
-            data : {
-                hashedPassword
-            }
+        await updateUserByEmail(formattedEmail,{ 
+            hashedPassword 
         })
-        
+
+
         return { 
             success : "Password Changed"
         }

@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "./prisma"
 import authConfig from "./auth-config"
-import { getUserById } from "../server/db/users"
+import { getUserById, updateUserByEmail } from "../server/db/users"
 import {nanoid} from "nanoid"
 import { UserRole } from "@prisma/client"
 
@@ -16,28 +16,19 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
   }, 
   events :  {
     async linkAccount ({user}) { 
-      await prisma.user.update({ 
-          where : { 
-              id : user.id
-          } , 
-          data : { 
-              emailVerified : new Date(), 
-
-          }
+    
+      await updateUserByEmail(user.email!, { 
+        emailVerified : new Date(), 
       })
     } ,
     signIn : async ({account,user}) => {
       
       if (account?.type !== "credentials") { 
-        await prisma.user.update({ 
-          where : { 
-            id : user.id
-          }, 
-          data : { 
-            emailVerified : new Date(), 
-            isOauth : true, 
-            
-          }
+      
+        await updateUserByEmail(user.email!,{ 
+          emailVerified : new Date(), 
+          isOauth : true, 
+          
         })
       }
     }
@@ -74,13 +65,9 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
       if (!userExists) return token
 
       if (!userExists.username) { 
-        await prisma.user.update({ 
-            where : { 
-                id : userExists.id
-            }, 
-            data : { 
-                username : nanoid(9) 
-            }
+      
+        await updateUserByEmail(userExists.email,{ 
+          username : nanoid(9) 
         })
       }
       const user = await getUserById(token.sub ?? token.id as string)

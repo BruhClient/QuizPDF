@@ -1,10 +1,9 @@
 "use server"
 
 import { auth } from "@/lib/auth"
-import { sendVerificationEmail } from "@/server/db/mail"
-import { prisma } from "@/lib/prisma"
-import { getUserByEmail, getUserByUsername } from "@/server/db/users"
-import { generateVerificationToken } from "@/server/db/verification-token"
+import { sendVerificationEmail } from "@/server/db/auth/mail"
+import { getUserByEmail, getUserByUsername, updateUserByEmail } from "@/server/db/users"
+import { generateVerificationToken } from "@/server/db/auth/verification-token"
 import { EditProfilePayload, EditProfileSchema } from "@/schema/edit-profile"
 
 export const editProfile = async (values : EditProfilePayload) => { 
@@ -32,13 +31,8 @@ export const editProfile = async (values : EditProfilePayload) => {
                 }
             }
 
-            await prisma.user.update({ 
-                where : {
-                    id : session.user.id
-                }, 
-                data : { 
-                    username : formattedUsername
-                }
+            await updateUserByEmail(formattedEmail,{ 
+                username : formattedUsername
             })
         }
 

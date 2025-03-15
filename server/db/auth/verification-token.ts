@@ -1,5 +1,5 @@
 import {v4 as uuidv4} from "uuid"
-import { prisma } from "../../lib/prisma"
+import { prisma } from "../../../lib/prisma"
 
 
 export const getVerificationTokenByEmail = async(email:string) => { 
@@ -64,6 +64,23 @@ export const generateVerificationToken = async (email : string, emailReplaced?:s
 
     return verificationToken
     
+}
+
+export const deleteVerificationTokenById = async (id : string) => {
+    try { 
+        
+        const verificationToken = await prisma.verificationToken.delete({
+            where : {
+                id
+            }
+        })
+        
+        
+
+        return verificationToken
+    } catch  { 
+        return null
+    }
 }
 
 

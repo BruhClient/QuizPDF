@@ -1,7 +1,7 @@
 "use server"
 
-import { sendPasswordResetEmail } from "@/server/db/mail"
-import { generatePasswordResetToken } from "@/server/db/password-reset-token"
+import { sendPasswordResetEmail } from "@/server/db/auth/mail"
+import { generatePasswordResetToken } from "@/server/db/auth/password-reset-token"
 import { prisma } from "@/lib/prisma"
 import { getUserByEmail } from "@/server/db/users"
 

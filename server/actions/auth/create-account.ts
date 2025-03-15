@@ -3,9 +3,9 @@ import { prisma } from "@/lib/prisma"
 import { SignUpSchema,SignUpPayload } from "@/schema/signup"
 import { z } from "zod"
 import bcryptjs from "bcryptjs"
-import { generateVerificationToken } from "@/server/db/verification-token" 
-import { sendVerificationEmail } from "@/server/db/mail"
-import { getUserByEmail, getUserByUsername } from "@/server/db/users"
+import { generateVerificationToken } from "@/server/db/auth/verification-token" 
+import { sendVerificationEmail } from "@/server/db/auth/mail"
+import { createUser, getUserByEmail, getUserByUsername } from "@/server/db/users"
  
 
 export const createAccount = async (values : SignUpPayload) => { 
@@ -44,14 +44,7 @@ export const createAccount = async (values : SignUpPayload) => {
 
 
         
-        await prisma.user.create({ 
-            data : { 
-                email : formattedEmail, 
-                hashedPassword : hashedPassword, 
-                username : formattedUsername
-
-            }
-        })
+        await createUser(formattedEmail,username,hashedPassword)
 
         const verifcationToken = await generateVerificationToken(formattedEmail)
 

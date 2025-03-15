@@ -1,4 +1,8 @@
+import { User } from "@prisma/client"
 import { prisma } from "../../lib/prisma"
+
+
+type allowedUserKeys = Partial<Pick<User, keyof User>>
 
 
 export const getUserById = async (id : string) => { 
@@ -32,7 +36,6 @@ export const getUserByEmail = async (email : string) => {
     }
     
 }
-
 export const getUserByUsername = async (username : string) => { 
 
     try { 
@@ -48,3 +51,38 @@ export const getUserByUsername = async (username : string) => {
     }
     
 }
+
+export const updateUserByEmail = async (email : string, options :  allowedUserKeys) => { 
+    try { 
+        const user = await prisma.user.update({
+            where : {
+                email
+            },
+            data : options, 
+            
+        })
+
+        return user
+    } catch { 
+        return null
+    }
+}
+
+
+export const createUser = async (email : string , username?: string ,  hashedPassword? : string) => { 
+    try { 
+        const user = await prisma.user.create({ 
+            data : { 
+                email , 
+                username, 
+                hashedPassword,
+
+            }
+        })
+
+        return user
+    } catch { 
+        return null
+    }
+}
+
