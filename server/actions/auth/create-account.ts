@@ -1,5 +1,4 @@
 "use server"
-import { prisma } from "@/lib/prisma"
 import { SignUpSchema,SignUpPayload } from "@/schema/signup"
 import { z } from "zod"
 import bcryptjs from "bcryptjs"

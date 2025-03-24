@@ -17,7 +17,7 @@ export const changePassword = async (email : string,password : string) => {
         return { 
             success : "Password Changed"
         }
-    } catch(error) { 
+    } catch { 
         return { 
             error : "Something went wrong"
         }

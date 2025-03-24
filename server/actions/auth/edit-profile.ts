@@ -63,7 +63,7 @@ export const editProfile = async (values : EditProfilePayload) => {
         return { 
             success : "Changed Successfully !"
         }
-    } catch(error) { 
+    } catch { 
         return { 
             error : "Something went wrong"
         }

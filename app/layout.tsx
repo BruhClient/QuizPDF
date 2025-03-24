@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Sofia_Sans } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ModeToggle } from "@/components/ModeToggle";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const sofiaSans = Sofia_Sans({
+  variable: "--font-sofia-sans",
   subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-mono",
   subsets: ["latin"],
 });
 
@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${sofiaSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <ThemeProvider 
         attribute="class"
