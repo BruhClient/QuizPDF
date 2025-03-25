@@ -10,11 +10,13 @@ const authRoutes = [
     "/signin" , 
     "/signup" , 
     
+    
 ]
 
 const publicRoutes = [
     "/", 
     "/account-verification"
+    
     
 ]
 
@@ -31,6 +33,8 @@ export default auth((req) => {
     }
 
     if (nextUrl.pathname.includes("/account-verification")) return NextResponse.next()
+
+    if (nextUrl.pathname.includes("/api/uploadthing")) return NextResponse.next()
 
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
     const isAuthRoute = authRoutes.includes(nextUrl.pathname)

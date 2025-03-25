@@ -12,6 +12,7 @@ export const env = createEnv({
     AUTH_GITHUB_ID: z.string(),
     AUTH_GITHUB_SECRET: z.string(),
     DATABASE_URL: z.string(),
+    UPLOADTHING_TOKEN:z.string(),
     // @ts-expect-error Mail requires vercel url
     NEXT_PUBLIC_VERCEL_URL : z.string().url(), 
   },

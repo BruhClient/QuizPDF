@@ -14,7 +14,7 @@ export default function Home() {
         <Button variant={"outline"} asChild><Link href={"/signin"}>Sign in</Link></Button>
       </div>
 
-      
+     
       
       
     </div>
