@@ -7,7 +7,7 @@ import { Form ,FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { changePassword } from "@/server/actions/auth/change-password";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners";
 
@@ -33,9 +33,9 @@ const ChangePasswordForm: FunctionComponent<ChangePasswordFormProps> = ({email})
 
         startTransition(() => {
             changePassword(email,values.password).then((data) => { 
-                if (data.error) return toast(data.error)
-
-                toast(data.success) 
+                if (data.error) return toast.error(data.error)
+                if (data.success) toast.success(data.success) 
+                
 
                 router.back()
             })

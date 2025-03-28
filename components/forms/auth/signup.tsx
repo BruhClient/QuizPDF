@@ -11,7 +11,7 @@ import Link from "next/link";
 import { SignUpPayload, SignUpSchema } from "@/schema/signup";
 import { useTransition } from "react";
 import { createAccount } from "@/server/actions/auth/create-account";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import { ClipLoader } from "react-spinners";
 
@@ -38,9 +38,9 @@ function SignUpForm() {
     const onSubmit = (values : SignUpPayload) => {
         startTransition(() => { 
             createAccount(values).then((data) => { 
-                if (data.error) return toast(data.error)
+                if (data.error) return toast.error(data.error)
                 if (data.success) {
-                    toast(data.success)
+                    toast.success(data.success)
                     form.reset()
                 }
 

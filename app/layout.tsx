@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Geist_Mono, Sofia_Sans } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
-import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ModeToggle } from "@/components/ModeToggle";
+import { Toaster } from 'react-hot-toast';
 
 const sofiaSans = Sofia_Sans({
   variable: "--font-sofia-sans",

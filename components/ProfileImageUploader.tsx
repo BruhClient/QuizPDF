@@ -6,7 +6,7 @@ import { Avatar,AvatarFallback, AvatarImage } from "./ui/avatar";
 import { User } from "lucide-react";
 import { useUploadThing } from "@/lib/uploadthing";
 import { changeProfilePic } from "@/server/actions/auth/profile-image";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { ClipLoader } from "react-spinners";
 
@@ -34,7 +34,7 @@ const ProfilePicChanger = ({initialImage} : {initialImage : string}) => {
 
         if (!resp) { 
 
-            toast("Something went wrong . File not uploaded")
+            toast.error("Something went wrong . File not uploaded")
             return 
         }
         
@@ -42,7 +42,7 @@ const ProfilePicChanger = ({initialImage} : {initialImage : string}) => {
         const data = await changeProfilePic(resp[0].ufsUrl)
 
 
-        if (data.error) toast(data.error)
+        if (data.error) toast.error(data.error)
         update()
         
     

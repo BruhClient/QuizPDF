@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import OauthButtons from "@/components/auth/OauthButtons";
 import Link from "next/link";
 import { login } from "@/server/actions/auth/login";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -28,7 +28,7 @@ function SignInForm() {
             
         }
     })
-    const {update} = useSession()
+   
     const [isPending,startTransition] = useTransition()
     const searchParams = useSearchParams()
 
@@ -39,7 +39,7 @@ function SignInForm() {
         startTransition(() => { 
             login(values).then((data)  => { 
                 
-                if (data.error) toast(data.error)
+                if (data.error) toast.error(data.error)
                 
                 
                if (data.success) window.location.href = "/dashboard"

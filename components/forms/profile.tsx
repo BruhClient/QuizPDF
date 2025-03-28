@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Form ,FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { EditProfilePayload, EditProfileSchema } from "@/schema/edit-profile";
 import { editProfile } from "@/server/actions/auth/edit-profile";
 import { useSession } from "next-auth/react";
@@ -35,8 +35,8 @@ const EditProfileForm = () => {
 
         startTransition(() => {
             editProfile(values).then((data) => { 
-                if (data.error) toast(data.error)
-                if (data.success) toast(data.success)
+                if (data.error) toast.error(data.error)
+                if (data.success) toast.success(data.success)
                 update()
 
             })

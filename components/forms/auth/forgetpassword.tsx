@@ -14,7 +14,7 @@ import {
   } from "@/components/ui/input-otp"
 import ChangePasswordForm from "./changepassword";
 import { sendPasswordResetVerification } from "@/server/actions/auth/send-password-reset-verification";
-import { toast } from "sonner";
+import { toast } from "react-hot-toast";
 import { verifyPasswordResetCode } from "@/server/actions/auth/verify-password-reset-code";
 import { ClipLoader } from "react-spinners";
 
@@ -41,7 +41,7 @@ const ForgetPasswordForm = ({back} : {back : () => void}) => {
             
            startTransition(() => { 
             sendPasswordResetVerification(values.email).then((data) => { 
-                if (data.error) return toast(data.error)
+                if (data.error) return toast.error(data.error)
 
                 setHasEmail(true)
             })
@@ -54,7 +54,7 @@ const ForgetPasswordForm = ({back} : {back : () => void}) => {
             // Handle checking of code with token
             startTransition(() => { 
                 verifyPasswordResetCode(values.email,values.code).then((data) => { 
-                    if (data.error) return toast(data.error)
+                    if (data.error) return toast.error(data.error)
                         
                     setIsVerified(true)
                 })
