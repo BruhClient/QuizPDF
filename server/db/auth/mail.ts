@@ -4,7 +4,7 @@ import {Resend} from "resend"
 
 const resend = new Resend(env.RESEND_API_KEY)
 
-const domain = env.NEXT_PUBLIC_VERCEL_URL
+const domain = process.env.NEXT_PUBLIC_VERCEL_URL
 
 export const sendVerificationEmail = async ( email: string , token:string ) => { 
     
