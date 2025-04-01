@@ -1,7 +1,6 @@
 "use server"
 
-import { getPasswordResetTokenByEmail } from "@/server/db/auth/password-reset-token"
-import { prisma } from "@/lib/prisma"
+import { deletePasswordResetTokenById, getPasswordResetTokenByEmail } from "@/server/db/auth/password-reset-token"
 
 
 
@@ -16,11 +15,7 @@ export const verifyPasswordResetCode = async (email :string,code : string) => {
             }
         } 
 
-        await prisma.passwordResetToken.delete({
-            where : {
-                id : passwordResetToken.id
-            }
-        })
+        await deletePasswordResetTokenById(passwordResetToken.id)
 
         return { 
             success : "Code Verified"

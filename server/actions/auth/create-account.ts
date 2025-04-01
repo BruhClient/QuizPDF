@@ -43,7 +43,10 @@ export const createAccount = async (values : SignUpPayload) => {
 
 
         
-        await createUser(formattedEmail,username,hashedPassword)
+        await createUser(formattedEmail,{
+            hashedPassword , 
+            username
+        })
 
         const verifcationToken = await generateVerificationToken(formattedEmail)
 

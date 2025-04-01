@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { sendVerificationEmail } from "@/server/db/auth/mail";
-import { prisma } from "@/lib/prisma";
 import { getUserByEmail, updateUserByEmail } from "@/server/db/users";
 import { deleteVerificationTokenById, generateVerificationToken, getVerificationTokenByToken } from "@/server/db/auth/verification-token";
 import Link from "next/link";
@@ -22,12 +21,12 @@ async function AccountVerificationPage({params} : {params : Promise<{slug : stri
     
     if (verificationToken) { 
         const currentTime = new Date();
-        const expiry_date = new Date(verificationToken.expires);
+        const expiry_date = new Date(verificationToken.expiresAt);
 
         
         if ( expiry_date <= currentTime) { 
             isExpired = true
-            const newToken = await generateVerificationToken(verificationToken.email)
+            const newToken = await generateVerificationToken(verificationToken.email!)
             sendVerificationEmail(newToken.email,newToken.token)
 
 

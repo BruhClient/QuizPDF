@@ -1,16 +1,13 @@
 import {v4 as uuidv4} from "uuid"
-import { prisma } from "../../../lib/prisma"
+import { db, verificationTokens } from "@/db/schema"
+import { eq } from "drizzle-orm"
 
 
 export const getVerificationTokenByEmail = async(email:string) => { 
     try { 
-        const verificationToken = await prisma.verificationToken.findFirst({
-            where : {
-                email
-            }
-        })
+        const verificationToken = await db.select().from(verificationTokens).where(eq(verificationTokens.email,email)).limit(1)
 
-        return verificationToken
+        return verificationToken[0]
     } catch  { 
         return null
     }
@@ -22,15 +19,11 @@ export const getVerificationTokenByToken = async(token:string) => {
     
     try { 
         
-        const verificationToken = await prisma.verificationToken.findFirst({
-            where : {
-                token
-            }
-        })
+        const verificationToken = await db.select().from(verificationTokens).where(eq(verificationTokens.token,token)).limit(1)
         
         
 
-        return verificationToken
+        return verificationToken[0]
     } catch  { 
         return null
     }
@@ -45,39 +38,29 @@ export const generateVerificationToken = async (email : string, emailReplaced?:s
     const existingToken = await getVerificationTokenByEmail(email) 
 
     if (existingToken) { 
-        await prisma.verificationToken.delete({
-            where :{ 
-                id : existingToken.id
-            }, 
-
-        } )
+        await db.delete(verificationTokens).where(eq(verificationTokens.id,existingToken.id))
     }
 
-    const verificationToken = await prisma.verificationToken.create({ 
-        data : { 
-            email , 
-            token , 
-            expires,
-            emailReplaced
-        }
-    })
+    const verificationToken = await db.insert(verificationTokens).values({ 
+        email , 
+        token , 
+        emailReplaced , 
+        expiresAt : expires, 
 
-    return verificationToken
+    }).returning()
+
+    return verificationToken[0]
     
 }
 
 export const deleteVerificationTokenById = async (id : string) => {
     try { 
         
-        const verificationToken = await prisma.verificationToken.delete({
-            where : {
-                id
-            }
-        })
+        const verificationToken = await db.delete(verificationTokens).where(eq(verificationTokens.id,id)).returning()
         
         
 
-        return verificationToken
+        return verificationToken[0]
     } catch  { 
         return null
     }

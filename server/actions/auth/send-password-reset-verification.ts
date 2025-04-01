@@ -2,7 +2,6 @@
 
 import { sendPasswordResetEmail } from "@/server/db/auth/mail"
 import { generatePasswordResetToken } from "@/server/db/auth/password-reset-token"
-import { prisma } from "@/lib/prisma"
 import { getUserByEmail } from "@/server/db/users"
 
 export const sendPasswordResetVerification = async (email : string) => { 

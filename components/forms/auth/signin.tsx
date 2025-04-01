@@ -42,7 +42,10 @@ function SignInForm() {
                 if (data.error) toast.error(data.error)
                 
                 
-               if (data.success) window.location.href = "/dashboard"
+               if (data.success) {
+             
+                window.location.href = "/dashboard"
+            }
                 
                         
                 

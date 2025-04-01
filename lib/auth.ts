@@ -1,11 +1,9 @@
 import NextAuth from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { prisma } from "./prisma"
 import authConfig from "./auth-config"
-import { getUserById, updateUserByEmail } from "../server/db/users"
+import { getUserById, updateUserByEmail, updateUserById } from "../server/db/users"
 import {nanoid} from "nanoid"
-import { UserRole } from "@prisma/client"
-
+import { DrizzleAdapter } from "@auth/drizzle-adapter"
+import { accounts, db, users } from "@/db/schema"
 
 
 
@@ -33,7 +31,10 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
       }
     }
   },
-  adapter: PrismaAdapter(prisma),
+  adapter: DrizzleAdapter(db, { 
+    usersTable : users , 
+    accountsTable : accounts, 
+  }),
   callbacks : {
     async signIn({user,account}) { 
       if (account?.provider !== "credentials") return true 
@@ -66,7 +67,7 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
 
       if (!userExists.username) { 
       
-        await updateUserByEmail(userExists.email,{ 
+        await updateUserById(userExists.id,{ 
           username : nanoid(9) 
         })
       }

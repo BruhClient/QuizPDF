@@ -42,9 +42,11 @@ export default function RootLayout({
         >
           
         <SessionProvider>
+         
           {authModal}
           {children}
           <Toaster />
+  
         </SessionProvider>
 
         <div className="fixed bottom-4 right-4">

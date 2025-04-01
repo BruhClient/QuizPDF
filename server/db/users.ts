@@ -1,20 +1,17 @@
-import { User } from "@prisma/client"
-import { prisma } from "../../lib/prisma"
 
+import { db, users } from "@/db/schema"
+import { eq, InferModel } from "drizzle-orm"
 
-type allowedUserKeys = Partial<Pick<User, keyof User>>
+type User = Partial<InferModel<typeof users>>;
 
 
 export const getUserById = async (id : string) => { 
 
     try { 
-        const user = await prisma.user.findUnique({
-            where : {
-                id : id
-            }
-        })
+        const user = await db.select().from(users).where(eq(users.id ,id)).limit(1);
+        
 
-        return user
+        return user[0]
     } catch { 
         return null
     }
@@ -24,13 +21,9 @@ export const getUserById = async (id : string) => {
 export const getUserByEmail = async (email : string) => { 
 
     try { 
-        const user = await prisma.user.findUnique({
-            where : {
-                email : email
-            }
-        })
+        const user = await db.select().from(users).where(eq(users.email ,email)).limit(1);
 
-        return user
+        return user[0]
     } catch { 
         return null
     }
@@ -39,45 +32,59 @@ export const getUserByEmail = async (email : string) => {
 export const getUserByUsername = async (username : string) => { 
 
     try { 
-        const user = await prisma.user.findUnique({
-            where : {
-                username
-            }
-        })
+        const user = await db.select().from(users).where(eq(users.username ,username)).limit(1);
 
-        return user
+        return user[0]
     } catch { 
         return null
     }
     
 }
 
-export const updateUserByEmail = async (email : string, options :  allowedUserKeys) => { 
-    try { 
-        const user = await prisma.user.update({
-            where : {
-                email
-            },
-            data : options, 
-            
-        })
 
-        return user
+export const updateUserById = async (id : string, options :  User) => { 
+    try { 
+        await db.update( users).set({
+            ...options
+        }).where(eq(users.id, id))
+
+
+        const user = await db.select().from(users).where(eq(users.id ,id)).limit(1);
+
+
+       
+
+        return user[0]
+    } catch { 
+        return null
+    }
+}
+
+export const updateUserByEmail = async (email : string, options :  User) => { 
+    try { 
+        await db.update( users).set({
+            ...options
+        }).where(eq(users.email, email))
+
+
+        const user = await db.select().from(users).where(eq(users.email ,email)).limit(1);
+
+
+       
+
+        return user[0]
     } catch { 
         return null
     }
 }
 
 
-export const createUser = async (email : string , username?: string ,  hashedPassword? : string) => { 
-    try { 
-        const user = await prisma.user.create({ 
-            data : { 
-                email , 
-                username, 
-                hashedPassword,
 
-            }
+export const createUser = async (email : string , options : User) => { 
+    try { 
+        const user = await db.insert(users).values({ 
+            email , 
+            ...options
         })
 
         return user

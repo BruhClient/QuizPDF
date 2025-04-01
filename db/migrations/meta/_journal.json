@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1743493677903,
+      "tag": "0000_red_katie_power",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1743494704324,
+      "tag": "0001_icy_reavers",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1743494975337,
+      "tag": "0002_modern_bloodscream",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1743495933119,
+      "tag": "0003_military_shadow_king",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1743496550885,
+      "tag": "0004_overconfident_screwball",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1743497474306,
+      "tag": "0005_greedy_captain_marvel",
+      "breakpoints": true
+    }
+  ]
+}

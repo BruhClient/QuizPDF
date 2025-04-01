@@ -1,17 +1,13 @@
 
-import { prisma } from "../../../lib/prisma"
+import { db, passwordTokens } from "@/db/schema"
 import crypto from "crypto"
+import { eq } from "drizzle-orm"
 
 
 export const getPasswordResetTokenByEmail = async(email:string) => { 
     try { 
-        const verificationToken = await prisma.passwordResetToken.findFirst({
-            where : {
-                email
-            }
-        })
-
-        return verificationToken
+        const verificationToken = await db.select().from(passwordTokens).where(eq(passwordTokens.email,email)).limit(1);
+        return verificationToken[0]
     } catch  { 
         return null
     }
@@ -26,24 +22,34 @@ export const generatePasswordResetToken = async (email : string) =>  {
     const existingToken = await getPasswordResetTokenByEmail(email) 
 
     if (existingToken) { 
-        await prisma.passwordResetToken.delete({
-            where :{ 
-                id : existingToken.id
-            }, 
-
-        } )
+        await db.delete(passwordTokens).where(eq(passwordTokens.id , existingToken.id))
     }
 
-    const passwordResetToken = await prisma.passwordResetToken.create({ 
-        data : { 
-            email , 
-            code , 
-            expires
-        }
-    })
+    const passwordResetToken = await db.insert(passwordTokens).values({ 
+        code , 
+        expiresAt : expires ,
+        email , 
 
-    return passwordResetToken
+
+    }).returning()
+
+    return passwordResetToken[0]
     
+}
+
+
+
+export const deletePasswordResetTokenById = async (id : string) => {
+    try { 
+        
+        const verificationToken = await db.delete(passwordTokens).where(eq(passwordTokens.id,id)).returning()
+        
+        
+
+        return verificationToken[0]
+    } catch  { 
+        return null
+    }
 }
 
 
