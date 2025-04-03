@@ -7,12 +7,10 @@ import {
   integer,
   pgEnum
 } from "drizzle-orm/pg-core"
-import { drizzle } from 'drizzle-orm/neon-http';
 import type { AdapterAccountType } from "next-auth/adapters"
-import { env } from "@/data/env/server";
 
 
-export const db = drizzle(env.AUTH_DRIZZLE_URL)
+
 
 
 export const userRoleEnum = pgEnum("user_role", ["admin", "user", "editor"]);
