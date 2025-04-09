@@ -1,9 +1,10 @@
 import NextAuth from "next-auth"
 import authConfig from "./auth-config"
-import { getUserById, updateUserByEmail, updateUserById } from "../server/db/users"
+import { getUserById, getUserByUsername, updateUserByEmail, updateUserById } from "../server/db/users"
 import {nanoid} from "nanoid"
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
-import { accounts, db, users } from "@/db/schema"
+import { accounts, userRoleEnum, users } from "@/db/schema"
+import { db } from "@/db"
 
 
 
@@ -52,7 +53,7 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
           session.user.image = token.image as string 
           session.user.id = token.id as string 
           session.user.isOauth = token.isOauth as boolean
-          session.user.role = token.role as UserRole
+          session.user.role = token.role as typeof userRoleEnum
           session.user.username = token.username as string 
 
       }
@@ -66,11 +67,25 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
       if (!userExists) return token
 
       if (!userExists.username) { 
-      
+
+        let username = nanoid(9)
+        let usernameExists = await getUserByUsername(username)
+        while (usernameExists) { 
+
+          username = nanoid(9) 
+
+          usernameExists = await getUserByUsername(username) 
+
+
+        }
+
+
         await updateUserById(userExists.id,{ 
-          username : nanoid(9) 
+          username ,
         })
       }
+
+      
       const user = await getUserById(token.sub ?? token.id as string)
 
 

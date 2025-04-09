@@ -20,7 +20,7 @@ function OauthButtons() {
 
             
             <Separator/>
-            <div className="absolute top-2 text-[13px] w-fit bg-card text-muted-foreground px-2">OR CONTINUE WITH</div>
+            <div className="absolute top-2 text-[13px] w-fit bg-background text-muted-foreground px-2">OR CONTINUE WITH</div>
 
         </div>
         <div className="flex w-full gap-2 flex-wrap ">
