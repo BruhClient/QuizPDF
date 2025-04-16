@@ -1,5 +1,6 @@
 
-import { db, users } from "@/db/schema"
+import { db } from "@/db";
+import {  users } from "@/db/schema"
 import { eq, InferModel } from "drizzle-orm"
 
 type User = Partial<InferModel<typeof users>>;

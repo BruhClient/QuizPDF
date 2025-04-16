@@ -1,5 +1,6 @@
 
-import { db, passwordTokens } from "@/db/schema"
+import { db } from "@/db";
+import { passwordTokens } from "@/db/schema"
 import crypto from "crypto"
 import { eq } from "drizzle-orm"
 
@@ -16,7 +17,7 @@ export const getPasswordResetTokenByEmail = async(email:string) => {
 
 
 export const generatePasswordResetToken = async (email : string) =>  { 
-    const code = crypto.randomInt(100_000,1_000_000 ).toString()
+    const code = crypto.randomInt(100_000,999_999 ).toString()
 
     const expires = new Date(new Date().getTime() + 3600 * 10000)
     const existingToken = await getPasswordResetTokenByEmail(email) 
