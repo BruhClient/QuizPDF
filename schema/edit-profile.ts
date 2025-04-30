@@ -2,7 +2,7 @@ import {z} from "zod"
 
 export const EditProfileSchema = z.object({ 
     email : z.string().email(),
-    username : z.string().min(1,{message : "Username is required."}).max(30,{message : "Username cannot exceed 30 characters."}),
+    name : z.string().min(1,{message : "Name is required."}).max(30,{message : "name cannot exceed 30 characters."}).trim(),
 
 })
 

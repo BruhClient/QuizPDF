@@ -1,3 +1,4 @@
+"use server"
 import {v4 as uuidv4} from "uuid"
 import { verificationTokens } from "@/db/schema"
 import { eq } from "drizzle-orm"

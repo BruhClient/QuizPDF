@@ -54,7 +54,7 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
           session.user.id = token.id as string 
           session.user.isOauth = token.isOauth as boolean
           session.user.role = token.role as typeof userRoleEnum
-          session.user.username = token.username as string 
+          session.user.name = token.name as string 
 
       }
       return session
@@ -66,32 +66,14 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
       const userExists = await getUserById(token.sub ?? token.id as string)
       if (!userExists) return token
 
-      if (!userExists.username) { 
-
-        let username = nanoid(9)
-        let usernameExists = await getUserByUsername(username)
-        while (usernameExists) { 
-
-          username = nanoid(9) 
-
-          usernameExists = await getUserByUsername(username) 
-
-
-        }
-
-
-        await updateUserById(userExists.id,{ 
-          username ,
-        })
-      }
-
+      
       
       const user = await getUserById(token.sub ?? token.id as string)
 
 
       return {
         id : user?.id , 
-        username : user?.username, 
+        name : user?.name, 
         isOauth : user?.isOauth, 
         image : user?.image, 
         email : user?.email, 

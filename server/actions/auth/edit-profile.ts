@@ -8,9 +8,9 @@ import { EditProfilePayload, EditProfileSchema } from "@/schema/edit-profile"
 
 export const editProfile = async (values : EditProfilePayload) => { 
     try { 
-        const {email , username} = EditProfileSchema.parse(values)
+        const {email , name} = EditProfileSchema.parse(values)
         const formattedEmail = email.toLowerCase()
-        const formattedUsername = username.trim()
+     
         
         
         
@@ -23,16 +23,9 @@ export const editProfile = async (values : EditProfilePayload) => {
             }
         }
 
-        if (session.user.username !== username) { 
-            const usernameExists = await getUserByUsername(formattedUsername)
-            if (usernameExists) { 
-                return {
-                    error : "Username already exist"
-                }
-            }
-
+        if (session.user.name !== name) { 
             await updateUserByEmail(formattedEmail,{ 
-                username : formattedUsername
+                name 
             })
         }
 

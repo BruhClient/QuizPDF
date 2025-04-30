@@ -10,10 +10,10 @@ import { createUser, getUserByEmail, getUserByUsername } from "@/server/db/users
 export const createAccount = async (values : SignUpPayload) => { 
 
     try { 
-        const {username,password,email} = SignUpSchema.parse(values)
+        const {name,password,email} = SignUpSchema.parse(values)
         const formattedEmail = email.toLowerCase()
 
-        const formattedUsername = username.trim()
+     
         const accountExists = await getUserByEmail(formattedEmail)
 
         if (accountExists) { 
@@ -30,13 +30,7 @@ export const createAccount = async (values : SignUpPayload) => {
             }
         }
 
-        const usernameExists = await getUserByUsername(formattedUsername)
-
-        if (usernameExists) { 
-            return { 
-                error : "Username already exists"
-            }
-        }
+       
         
 
         const hashedPassword = await bcryptjs.hash(password,4)
@@ -45,7 +39,7 @@ export const createAccount = async (values : SignUpPayload) => {
         
         await createUser(formattedEmail,{
             hashedPassword , 
-            username
+            name,
         })
 
         const verifcationToken = await generateVerificationToken(formattedEmail)

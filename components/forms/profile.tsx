@@ -20,7 +20,7 @@ const EditProfileForm = () => {
                 resolver : zodResolver(EditProfileSchema), 
                 defaultValues : {
                   
-                    username : session?.user.username ?? '', 
+                    name : session?.user.name ?? '', 
                     email : session?.user.email ?? "", 
     
                     
@@ -47,7 +47,7 @@ const EditProfileForm = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     <FormField
                         control={form.control}
-                        name ="username"
+                        name ="name"
                         render={({field}) => (
                             <FormItem >
                                 <FormLabel>

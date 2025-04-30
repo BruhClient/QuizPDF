@@ -26,7 +26,7 @@ function SignUpForm() {
         defaultValues : {
           
             email : "",
-            username : "", 
+            name : "", 
             password : "", 
             confirmPassword : ""
             
@@ -72,11 +72,11 @@ function SignUpForm() {
             />
             <FormField
                 control={form.control}
-                name ="username"
+                name ="name"
                 render={({field}) => (
                     <FormItem>
                         <FormLabel>
-                            Username
+                            Name
                         </FormLabel>
                         <FormControl>
                             <Input {...field} placeholder="jsmith" />

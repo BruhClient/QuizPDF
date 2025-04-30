@@ -13,7 +13,7 @@ import ProfileImageUploader from "../ProfileImageUploader";
 function UserProfile() {
     const user = useSessionUser()
     
-    
+    console.log(user    )
     if (!user) { 
         return <Skeleton className="w-10 aspect-square rounded-full" />
     }
@@ -34,7 +34,7 @@ function UserProfile() {
                     <AvatarFallback><User/></AvatarFallback>
                 </Avatar>
                 <div>
-                    <div>{user.username}</div>
+                    <div>{user.name}</div>
                     <div className="text-sm text-muted-foreground">{user.email}</div>
                 </div>
                 

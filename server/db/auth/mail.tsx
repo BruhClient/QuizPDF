@@ -1,4 +1,4 @@
-
+"use server"
 import { VerificationCodeEmail } from "@/components/email_templates/PasswordResetTemplate"
 import { VerificationEmail } from "@/components/email_templates/VerificationTemplate"
 import { env } from "@/data/env/server"
