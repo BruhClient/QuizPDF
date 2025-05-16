@@ -8,12 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import OauthButtons from "@/components/auth/OauthButtons";
 import Link from "next/link";
-import { SignUpPayload, SignUpSchema } from "@/schema/signup";
+import { SignUpPayload, SignUpSchema } from "@/schema/auth/signup";
 import { useTransition } from "react";
 import { createAccount } from "@/server/actions/auth/create-account";
-import { toast } from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import { ClipLoader } from "react-spinners";
+import { showErrorToast, showSuccessToast } from "@/lib/toast";
 
 
 function SignUpForm() {
@@ -38,11 +38,14 @@ function SignUpForm() {
     const onSubmit = (values : SignUpPayload) => {
         startTransition(() => { 
             createAccount(values).then((data) => { 
-                if (data.error) return toast.error(data.error)
-                if (data.success) {
-                    toast.success(data.success)
-                    form.reset()
-                }
+                if (data.success) { 
+                                     showSuccessToast(data.success,)
+                                     form.reset()
+                                   } else { 
+                                     showErrorToast(data.error)
+                                   }
+                                   
+                
 
             })
         })

@@ -6,8 +6,7 @@ import { useForm } from "react-hook-form";
 import { Form ,FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { toast } from "react-hot-toast";
-import { EditProfilePayload, EditProfileSchema } from "@/schema/edit-profile";
+import { EditProfilePayload, EditProfileSchema } from "@/schema/auth/edit-profile";
 import { editProfile } from "@/server/actions/auth/edit-profile";
 import { useSession } from "next-auth/react";
 import {ClipLoader} from "react-spinners"
@@ -35,8 +34,6 @@ const EditProfileForm = () => {
 
         startTransition(() => {
             editProfile(values).then((data) => { 
-                if (data.error) toast.error(data.error)
-                if (data.success) toast.success(data.success)
                 update()
 
             })

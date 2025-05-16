@@ -1,5 +1,5 @@
 
-import { PasswordPayload, PasswordSchema } from "@/schema/reset-password";
+import { PasswordPayload, PasswordSchema } from "@/schema/auth/reset-password";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FunctionComponent, useTransition } from "react";
 import { useForm } from "react-hook-form";
@@ -7,9 +7,9 @@ import { Form ,FormControl, FormField, FormItem, FormLabel } from "@/components/
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { changePassword } from "@/server/actions/auth/change-password";
-import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners";
+import { showErrorToast, showSuccessToast } from "@/lib/toast";
 
 interface ChangePasswordFormProps {
     email : string , 
@@ -33,8 +33,13 @@ const ChangePasswordForm: FunctionComponent<ChangePasswordFormProps> = ({email})
 
         startTransition(() => {
             changePassword(email,values.password).then((data) => { 
-                if (data.error) return toast.error(data.error)
-                if (data.success) toast.success(data.success) 
+                if (data.success) { 
+                                     showSuccessToast(data.success,)
+                                   } else { 
+                                     showErrorToast(data.error)
+                                   }
+                                   
+
                 
 
                 router.back()

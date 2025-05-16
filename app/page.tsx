@@ -1,6 +1,7 @@
-
+"use client"
 
 import { Button } from "@/components/ui/button";
+import { showErrorToast, showSuccessToast } from "@/lib/toast";
 import Link from "next/link";
 
 
@@ -12,6 +13,8 @@ export default function Home() {
       <div className="flex gap-3">
         <Button variant={"outline"} asChild><Link href={"/signup"}>Sign up</Link></Button>
         <Button variant={"outline"} asChild><Link href={"/signin"}>Sign in</Link></Button>
+        <Button onClick={() => showSuccessToast()}>Success Toast</Button>
+        <Button onClick={() => showErrorToast()}>Error Toast</Button>
       </div>
 
      

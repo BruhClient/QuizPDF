@@ -1,6 +1,6 @@
 "use client"
 
-import { SignInPayload, SignInSchema } from "@/schema/signin";
+import { SignInPayload, SignInSchema } from "@/schema/auth/signin";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -9,12 +9,13 @@ import { Button } from "@/components/ui/button";
 import OauthButtons from "@/components/auth/OauthButtons";
 import Link from "next/link";
 import { login } from "@/server/actions/auth/login";
-import { toast } from "react-hot-toast";
 import { useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import ForgetPasswordForm from "./forgetpassword";
 import { ClipLoader } from "react-spinners";
+import { LOGIN_ROUTE } from "@/route";
+import { showErrorToast, showSuccessToast } from "@/lib/toast";
+import { toast } from "sonner";
 function SignInForm() {
 
 
@@ -38,15 +39,17 @@ function SignInForm() {
 
         startTransition(() => { 
             login(values).then((data)  => { 
+            
+                if (data.success) { 
+                                                     showSuccessToast(data.success,)
+                                                     window.location.href = LOGIN_ROUTE
+                                                   } else { 
+                                            
+                                                     showErrorToast(data.error)
+                                                   }
                 
-                if (data.error) toast.error(data.error)
                 
-                
-               if (data.success) {
-             
-                window.location.href = "/dashboard"
-            }
-                
+                 
                         
                 
                 

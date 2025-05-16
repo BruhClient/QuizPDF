@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Sofia_Sans } from "next/font/google";
 import "./globals.css";
-import { SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "@/components/ThemeProvider";
 import { ModeToggle } from "@/components/ModeToggle";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "@/components/ui/sonner"
+import AppProvider from "@/components/providers/AppProvider";
 
 const sofiaSans = Sofia_Sans({
   variable: "--font-sofia-sans",
@@ -31,29 +30,25 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       
-      <body
-        className={`${sofiaSans.variable} ${geistMono.variable} font-sans antialiased`}
-      >
-        <ThemeProvider 
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
+        <body
+          className={`${sofiaSans.variable} ${geistMono.variable} font-sans antialiased`}
         >
-          
-        <SessionProvider>
+          <AppProvider>
          
-          {authModal}
-          {children}
-          <Toaster />
-  
-        </SessionProvider>
-
-        <div className="fixed bottom-4 right-4">
-          <ModeToggle />
-        </div>
-        </ThemeProvider>
-      </body>
+            
+       
+          
+            {authModal}
+            <main> {children}</main>
+           
+            <Toaster />
+            <div className="fixed bottom-4 right-4">
+              <ModeToggle />
+            </div>
+          </AppProvider>
+          
+        </body>
+        
 
       
     </html>

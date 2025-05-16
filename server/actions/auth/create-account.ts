@@ -1,10 +1,10 @@
 "use server"
-import { SignUpSchema,SignUpPayload } from "@/schema/signup"
+import { SignUpSchema,SignUpPayload } from "@/schema/auth/signup"
 import { z } from "zod"
 import bcryptjs from "bcryptjs"
 import { generateVerificationToken } from "@/server/db/auth/verification-token" 
 import { sendVerificationEmail } from "@/server/db/auth/mail"
-import { createUser, getUserByEmail, getUserByUsername } from "@/server/db/users"
+import { createUser, getUserByEmail } from "@/server/db/users"
  
 
 export const createAccount = async (values : SignUpPayload) => { 

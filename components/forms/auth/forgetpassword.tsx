@@ -1,4 +1,4 @@
-import { ResetPasswordPayload, ResetPasswordSchema } from "@/schema/reset-password";
+import { ResetPasswordPayload, ResetPasswordSchema } from "@/schema/auth/reset-password";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { Form ,FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -14,9 +14,9 @@ import {
   } from "@/components/ui/input-otp"
 import ChangePasswordForm from "./changepassword";
 import { sendPasswordResetVerification } from "@/server/actions/auth/send-password-reset-verification";
-import { toast } from "react-hot-toast";
 import { verifyPasswordResetCode } from "@/server/actions/auth/verify-password-reset-code";
 import { ClipLoader } from "react-spinners";
+import { showErrorToast, showSuccessToast } from "@/lib/toast";
 
  
 const ForgetPasswordForm = ({back} : {back : () => void}) => {
@@ -41,7 +41,12 @@ const ForgetPasswordForm = ({back} : {back : () => void}) => {
             
            startTransition(() => { 
             sendPasswordResetVerification(values.email).then((data) => { 
-                if (data.error) return toast.error(data.error)
+                if (data.success) { 
+                     showSuccessToast(data.success,)
+                   } else { 
+                     showErrorToast(data.error)
+                   }
+                   
 
                 setHasEmail(true)
             })
@@ -54,7 +59,12 @@ const ForgetPasswordForm = ({back} : {back : () => void}) => {
             // Handle checking of code with token
             startTransition(() => { 
                 verifyPasswordResetCode(values.email,values.code).then((data) => { 
-                    if (data.error) return toast.error(data.error)
+                   if (data.success) { 
+                     showSuccessToast(data.success,)
+                   } else { 
+                     showErrorToast(data.error)
+                   }
+                   
                         
                     setIsVerified(true)
                 })
