@@ -5,13 +5,13 @@ import { ModeToggle } from "@/components/ModeToggle";
 import { Toaster } from "@/components/ui/sonner"
 import AppProvider from "@/components/providers/AppProvider";
 
-const sofiaSans = Sofia_Sans({
-  variable: "--font-sofia-sans",
+const sans = Sofia_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-mono",
+const serif = Geist_Mono({
+  variable: "--font-serif",
   subsets: ["latin"],
 });
 
@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       
         <body
-          className={`${sofiaSans.variable} ${geistMono.variable} font-sans antialiased`}
+          className={`${sans.variable} ${serif.variable} font-sans antialiased`}
         >
           <AppProvider>
          
