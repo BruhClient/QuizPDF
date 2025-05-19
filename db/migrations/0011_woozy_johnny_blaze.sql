@@ -1,0 +1,1 @@
+ALTER TABLE "attempt" ADD COLUMN "answers" jsonb NOT NULL;

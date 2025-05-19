@@ -50,6 +50,55 @@
       "when": 1746014928031,
       "tag": "0006_wet_baron_zemo",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1747377851307,
+      "tag": "0007_rapid_angel",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1747378211400,
+      "tag": "0008_stormy_the_professor",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1747378630264,
+      "tag": "0009_busy_darkhawk",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1747401598587,
+      "tag": "0010_rainy_puck",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1747498463233,
+      "tag": "0011_woozy_johnny_blaze",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1747622858796,
+      "tag": "0012_lowly_blockbuster",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1747627931116,
+      "tag": "0013_steep_black_tom",
+      "breakpoints": true
     }
   ]
 }

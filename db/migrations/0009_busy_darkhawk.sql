@@ -1,0 +1,1 @@
+ALTER TABLE "quiz" ALTER COLUMN "questionNum" SET DATA TYPE integer;

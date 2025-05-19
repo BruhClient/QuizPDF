@@ -5,8 +5,10 @@ const nextConfig: NextConfig = {
   images : {
     domains : ["lh3.googleusercontent.com"]
   },
+  
   experimental : { 
-    dynamicIO : true
+    dynamicIO : true,
+    serverComponentsExternalPackages: ["pdf-parse"],
   },
   eslint : {
     ignoreDuringBuilds : true

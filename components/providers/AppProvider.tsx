@@ -3,6 +3,7 @@
 import React from 'react'
 import { ThemeProvider } from './ThemeProvider'
 import { SessionProvider } from 'next-auth/react'
+import ReactQueryProvider from './ReactQueryProvider'
 
 const AppProvider = ({children} : {children : React.ReactNode}) => {
   return (
@@ -12,12 +13,20 @@ const AppProvider = ({children} : {children : React.ReactNode}) => {
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
+          
+          
+        
+       
           >
             
           <SessionProvider>
-          
-            {children}
+
+
+            
+            <ReactQueryProvider>
+                {children}
+            </ReactQueryProvider>
+            
     
     
           </SessionProvider>

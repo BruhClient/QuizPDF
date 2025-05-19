@@ -33,7 +33,7 @@ const EditProfileForm = () => {
     const onSubmit = (values : EditProfilePayload) => { 
 
         startTransition(() => {
-            editProfile(values).then((data) => { 
+            editProfile(values).then(() => { 
                 update()
 
             })

@@ -5,7 +5,8 @@ import {
   text,
   primaryKey,
   integer,
-  pgEnum
+  pgEnum,
+  jsonb,
 } from "drizzle-orm/pg-core"
 import type { AdapterAccountType } from "next-auth/adapters"
 
@@ -15,6 +16,8 @@ import type { AdapterAccountType } from "next-auth/adapters"
 
 export const userRoleEnum = pgEnum("user_role", ["admin", "user", "editor"]);
 
+export const userPlanEnum = pgEnum("user_plan", ["Free", "Pro"]);
+
 
 export const users = pgTable("user", {
   id: text("id")
@@ -22,11 +25,12 @@ export const users = pgTable("user", {
     .$defaultFn(() => crypto.randomUUID()),
   name: text("name"),
   email: text("email").unique().notNull(),
-
+  plan : userPlanEnum("plan").default("Free").notNull(),
   role: userRoleEnum("role").default("user").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   hashedPassword : text("hashedPassword"), 
   isOauth : boolean("isOauth"),
+  quizCreated : integer("quizCreated").default(0).notNull(),
   image: text("image"),
 })
  
@@ -88,4 +92,47 @@ export const passwordTokens = pgTable(
     },
     
   )
+
+
+  
+export const quiz = pgTable(
+    "quiz",
+    {
+      id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+      title : text("title").notNull(),
+      questions: jsonb('questions').notNull(),
+      quizType : text("quizType").notNull(), 
+      questionNum : integer("questionNum").notNull(),
+      createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+      userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+     
+    },
+    
+  )
+
+
+export const attempt = pgTable(
+    "attempt",
+    {
+      id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+      score : integer("score").notNull(),
+      createdAt: timestamp("createdAt", { mode: "date" }).defaultNow().notNull(),
+      answers: jsonb('answers').notNull(),
+      quizId: text("quizId")
+      .notNull()
+      .references(() => quiz.id, { onDelete: "cascade" }),
+      userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+     
+    },
+    
+  )
+ 
  

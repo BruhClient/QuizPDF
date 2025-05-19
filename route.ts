@@ -1,5 +1,6 @@
 export const PUBLIC_ROUTES = [
     "/", 
+    "/api/stripe/webhook",
 ]
 
 export const AUTH_ROUTES = [

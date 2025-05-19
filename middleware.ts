@@ -14,8 +14,9 @@ export default auth((req) => {
     const isLoggedIn = !!req.auth
 
     if (nextUrl.pathname.includes(API_ROUTE_PREFIX)) return NextResponse.next()
-    
-
+        
+    if (nextUrl.pathname.includes("/api/pdf/extract")) return NextResponse.next()
+        
     if (nextUrl.pathname.includes(ACCOUNT_VERIFICATION_PREFIX)) return NextResponse.next()
 
     if (nextUrl.pathname.includes(UPLOADTHING_PREFIX)) return NextResponse.next()

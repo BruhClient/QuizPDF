@@ -1,5 +1,6 @@
 "use server"
 import { VerificationCodeEmail } from "@/components/email_templates/PasswordResetTemplate"
+import { ProPlanConfirmationEmail } from "@/components/email_templates/PaymentConfirmationEmail"
 import { VerificationEmail } from "@/components/email_templates/VerificationTemplate"
 import { env } from "@/data/env/server"
 import {Resend} from "resend"
@@ -34,3 +35,21 @@ export const sendPasswordResetEmail = async ( email: string , code:string ) => {
 
     
 } 
+
+export const sendPaymentConfirmation = async ( email: string ,name : string ) => { 
+    
+    
+    await resend.emails.send({
+        from: 'mail@maniacalai.com',
+        to: email,
+        subject: 'Your Pro Plan is Active 🎉',
+        react: ProPlanConfirmationEmail({
+            customerName: name,
+          
+        }),
+        })
+
+    
+} 
+
+

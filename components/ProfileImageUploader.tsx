@@ -31,7 +31,7 @@ const ProfilePicChanger = ({initialImage} : {initialImage : string}) => {
       
         startTransition(async () => { 
         const resp = await startUpload([file])
-
+        console.log(resp)
         if (!resp) { 
 
     

@@ -54,6 +54,8 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
           session.user.isOauth = token.isOauth as boolean
           session.user.role = token.role as typeof userRoleEnum
           session.user.name = token.name as string 
+          session.user.plan = token.plan as "Free" | "Pro" 
+          session.user.quizCreated = token.quizCreated as number
 
       }
       return session
@@ -76,7 +78,9 @@ export const { handlers : {GET , POST}, auth, signIn, signOut } = NextAuth({
         isOauth : user?.isOauth, 
         image : user?.image, 
         email : user?.email, 
-        role : user?.role
+        role : user?.role,
+        plan : user?.plan, 
+        quizCreated : user?.quizCreated, 
 
       }
     }
