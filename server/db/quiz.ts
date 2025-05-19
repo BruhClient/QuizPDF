@@ -30,11 +30,11 @@ export const createQuiz = async (values : QuizPayload,fileSize?:number) => {
             }
         }
         
-        const generatedQuiz = await generateQuestionsFromOpenAi(values)
+        const generatedQuiz = await generateQuestionsFromOpenAi(values, fileSize !== undefined)
         
-        if (!generatedQuiz) { 
+        if (generatedQuiz.error != undefined) { 
             return { 
-            error : "Open Ai Error"
+            error : generatedQuiz.error
         
             }
 
@@ -66,8 +66,14 @@ export const createQuiz = async (values : QuizPayload,fileSize?:number) => {
             success : "Quiz has been created",
             data : quiz_db[0].id
         }
-    } catch(error) { 
-        console.log(error)
+    } catch(error : any) { 
+        if (error.message) { 
+
+            return { 
+            error : error.message
+        }
+            
+        }
         return { 
             error : "Something went wrong"
         }

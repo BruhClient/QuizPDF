@@ -60,7 +60,7 @@ const CreatePDFQuizForm = () => {
           queryClient.invalidateQueries({queryKey : ["quizzes"]})
 
           router.push(`/attempt/${data.data}`)
-        } else{ 
+        } else { 
           showErrorToast(data.error)
         }
       })

@@ -41,7 +41,10 @@ function tryParseQuestions(raw: string): any[] {
     try {
       const questions = JSON.parse(match[1]);
       if (Array.isArray(questions)) return questions;
-    } catch {}
+    } catch(error) {
+
+      console.log(error)
+    }
   }
 
   // Final fallback: try to wrap in JSON if needed
@@ -65,13 +68,13 @@ const variationPrompts = [
   "Ask questions that test understanding, not recall.",
 ];
 
-export async function generateQuestionsFromOpenAi(options: QuizPayload) {
+export async function generateQuestionsFromOpenAi(options: QuizPayload,pdf = false ) {
   const { prompt, questionNum, questionType, difficulty } = options;
 
   try {
     const chunks = chunkText(prompt, 1000);
     const titleChunk = chunkText(prompt, 100)[0] || "General Topic";
-
+    
     // 1. Generate quiz title
     const titleRes = await openai.chat.completions.create({
       model: "gpt-4-turbo",
@@ -93,6 +96,7 @@ export async function generateQuestionsFromOpenAi(options: QuizPayload) {
 
     // 2. Calculate number of batches
     const batchCount = Math.ceil(questionNum / BATCH_SIZE);
+    
 
     // 3. Generate questions with varied prompts
     const responses = await Promise.all(
@@ -101,16 +105,17 @@ export async function generateQuestionsFromOpenAi(options: QuizPayload) {
         const remaining = questionNum - i * BATCH_SIZE;
         const numQuestions = isLast ? remaining : BATCH_SIZE;
 
+   
         const chunk = chunks[i % chunks.length];
-        const variation = variationPrompts[i % variationPrompts.length];
 
+        const variant = variationPrompts[i % chunks.length]
         return openai.chat.completions.create({
           model: "gpt-4-turbo",
           messages: [
             { role: "system", content: SYSTEM_QUESTION_PROMPT },
             {
               role: "user",
-              content: `Generate ${numQuestions} ${questionType} questions from the following educational text. Use difficulty level: "${difficulty}". ${variation} .Return only valid JSON.\n\n"${chunk}"`,
+              content: `Generate ${numQuestions} ${questionType} questions from the following educational text. Use difficulty level: "${difficulty}". ${variant} .Return only valid JSON.\n\n"${chunk}"`,
             },
           ],
           temperature: 0.7,
@@ -119,6 +124,7 @@ export async function generateQuestionsFromOpenAi(options: QuizPayload) {
       })
     );
 
+    
     // 4. Parse and collect all questions
     const allQuestions: any[] = [];
 
@@ -128,15 +134,31 @@ export async function generateQuestionsFromOpenAi(options: QuizPayload) {
       allQuestions.push(...questions);
     }
 
+    if (questionNum !== allQuestions.length) { 
+      if (pdf) { 
+        return {
+        error : "Cound not generate enough questions . Please choose a lower question amount or upload another PDF "
+      };
+      }
+      return {
+        error : "Cound not generate enough questions . Please be more desciptive with your prompts "
+      };
+    
+    }
+
+    
     return {
       title,
       questions: allQuestions.slice(0, questionNum), // Limit to exact number
     };
   } catch (error: any) {
-    console.error("OpenAI error:", error);
     if (error?.status === 429) {
-      throw new Error("RATE_LIMIT_EXCEEDED");
+      return {
+        error : "RATE_LIMIT_EXCEEDED"
+      };
     }
-    throw new Error("Failed to generate quiz. Please try again.");
+    return {
+        error : "Failed to train quiz . Please try again"
+    };;
   }
 }
