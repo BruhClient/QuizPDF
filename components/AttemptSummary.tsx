@@ -68,7 +68,7 @@ const OpenEndedSummary = ({index,question,inputs,answers} : {index : number,ques
     const sentences = question.split("_")
     const isCorrect = inputs[0].trim().toLowerCase() === answers[0].trim().toLowerCase() && inputs[1].trim().toLowerCase() === answers[1].trim().toLowerCase()
    
-    return <Card className={cn(isCorrect ? "bg-green-100" : "bg-red-100")}>
+    return <Card className={cn(isCorrect ? "bg-green-100" : "bg-red-100 ","text-black")}>
         <CardHeader>
             <CardTitle>
                 Q{index +1}. 
