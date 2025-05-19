@@ -13,7 +13,7 @@ import { Particles } from "@/components/magicui/particles";
 export default function Home() {
   return (
     <div className="px-5 flex flex-col gap-10 ">
-      <div className="fixed top-0 left-0 z-[-1] lg:block hidden">
+      <div className="fixed top-0 left-0 z-[-1]">
         <Particles className="h-screen w-screen" color="#c452eb" size={1}/>
       </div>
       <Hero />
