@@ -169,7 +169,7 @@ const Quiz = ({id,questions,questionNum , quizType , quizId } : {id : string,que
             </>)}
 
                 {
-                    quizType === "Practice" && currentQuestion.type === "Multiple Choice" && selectedIndex != null && <Button  size={"lg"} className='w-full' onClick={() => setSelectedIndex(null)}>Try again <Undo /></Button>
+                    quizType === "Practice" && currentQuestion.type === "Multiple Choice" && selectedIndex != null && selectedIndex !== currentQuestion.answer && <Button  size={"lg"} className='w-full' onClick={() => setSelectedIndex(null)}>Try again <Undo /></Button>
                   
                 }
 
