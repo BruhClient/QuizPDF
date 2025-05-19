@@ -12,9 +12,12 @@ const domain = process.env.NEXT_PUBLIC_VERCEL_URL
 export const sendVerificationEmail = async ( email: string , token:string ) => { 
     
     const confirmLink = `${domain}/account-verification/${token}`
+    
+    
 
+    
     await resend.emails.send({ 
-        from : "mail@maniacalai.com", 
+        from : "mail@quizpdf.net", 
         to : email , 
         subject : "Confirm your email" , 
         react : VerificationEmail({verificationUrl : confirmLink})
@@ -27,7 +30,7 @@ export const sendPasswordResetEmail = async ( email: string , code:string ) => {
     
     
     await resend.emails.send({ 
-        from : "mail@maniacalai.com", 
+        from : "mail@quizpdf.net", 
         to : email , 
         subject : "Password Reset Code" , 
         react : VerificationCodeEmail({ code }),
@@ -40,7 +43,7 @@ export const sendPaymentConfirmation = async ( email: string ,name : string ) =>
     
     
     await resend.emails.send({
-        from: 'mail@maniacalai.com',
+        from: 'mail@quizpdf.net',
         to: email,
         subject: 'Your Pro Plan is Active 🎉',
         react: ProPlanConfirmationEmail({
