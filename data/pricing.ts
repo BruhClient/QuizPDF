@@ -9,7 +9,7 @@ export const pricingTypes = [
          fileSize : 20,
          discounts : "", 
          numOfQuizzes : 20,
-         description : "For highschoolers",
+         description : "For Students",
          support : true , 
 
     },
@@ -22,7 +22,7 @@ export const pricingTypes = [
          fileSize : 50,
          numOfQuizzes : "Unlimited",
          discounts : 50,
-         description : "For highschoolers"
+         description : "For Undergraduates"
 
     },
 ]
