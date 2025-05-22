@@ -2,7 +2,7 @@
 
 import { QuizPayload, QuizSchema } from '@/schema/CreateQuiz'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useTransition } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from '../ui/button'
@@ -16,7 +16,7 @@ import { ClipLoader } from 'react-spinners'
 import { useRouter } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
 
-const CreateQuizForm = () => {
+const CreateQuizForm = ({startTransition} : {startTransition : React.TransitionStartFunction}) => {
 
   const form = useForm<QuizPayload>({ 
     resolver : zodResolver(QuizSchema), 
@@ -25,12 +25,13 @@ const CreateQuizForm = () => {
       questionNum : 1, 
       quizType : "Practice", 
       questionType : "Multiple Choice", 
-      difficulty : "Easy"
+      difficulty : "Easy",
+      prompt : "",
 
     }
   })
 
-  const [isPending,startTransition] = useTransition()
+  
   const router = useRouter()
   const queryClient = useQueryClient()
   const onSubmit = (values : QuizPayload) => {
@@ -154,7 +155,7 @@ const CreateQuizForm = () => {
                     )}
                 />
         
-            <Button className="w-full" disabled={isPending}>{isPending ? <div className="flex items-center gap-2"><ClipLoader size={15} /> Creating... </div> : <><Layers /> Create Quiz</>}</Button>
+            <Button className="w-full"><Layers /> Create Quiz</Button>
                 
 
                 

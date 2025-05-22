@@ -7,7 +7,7 @@ import { indexes } from '@/data/constants'
 
 const AttemptSummary = ({questions,answers} : {questions : any[] , answers : (number | string[] | null)[]}) => {
   return (
-    <div className='flex flex-col gap-2 max-w-[1000px]'>
+    <div className='flex flex-col gap-2 max-w-[1000px] w-full'>
       {
         questions.map((question,index) => {
             const questionType = question.type
@@ -30,7 +30,7 @@ export default AttemptSummary
 const MCQSummary = ({index,question,options,input,answer} : {index : number,question : string,options : string[],input : number | null , answer : number}) => {
   
     
-    return <Card >
+    return <Card className='w-full'>
       <CardHeader>
             <CardTitle>
                 Q{index +1}. 
@@ -50,9 +50,9 @@ const MCQSummary = ({index,question,options,input,answer} : {index : number,ques
               options.map((option,optionIndex) => {
 
                 if (input === optionIndex) { 
-                    return <div key={option} className={cn('text-lg w-full px-3 py-2 rounded-lg flex', optionIndex === answer ? "bg-green-300" : "bg-red-300")} ><span className='pr-2'>{indexes[optionIndex]}.</span> {option}</div>
+                    return <div key={option} className={cn('text-lg w-full px-3 py-2 rounded-lg flex', optionIndex === answer ? "bg-green-300" : "bg-red-300","text-black")} ><span className='pr-2'>{indexes[optionIndex]}.</span> {option}</div>
                 }
-              return <div key={option} className={cn('text-lg w-full px-3 py-2 rounded-lg flex', optionIndex === answer && "bg-green-300")} ><span className='pr-2'>{indexes[optionIndex]}.</span> {option}</div>
+              return <div key={option} className={cn('text-lg w-full px-3 py-2 rounded-lg flex', optionIndex === answer && "bg-green-300 text-black")} ><span className='pr-2'>{indexes[optionIndex]}.</span> {option}</div>
             })
             }
           </div>
@@ -68,7 +68,7 @@ const OpenEndedSummary = ({index,question,inputs,answers} : {index : number,ques
     const sentences = question.split("_")
     const isCorrect = inputs[0].trim().toLowerCase() === answers[0].trim().toLowerCase() && inputs[1].trim().toLowerCase() === answers[1].trim().toLowerCase()
    
-    return <Card className={cn(isCorrect ? "bg-green-100" : "bg-red-100 ","text-black")}>
+    return <Card className={cn(isCorrect ? "bg-green-100" : "bg-red-100 ","text-black w-full")}>
         <CardHeader>
             <CardTitle>
                 Q{index +1}. 

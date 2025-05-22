@@ -2,7 +2,7 @@
 
 import { QuizPayload, QuizSchema } from '@/schema/CreateQuiz'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useEffect, useState, useTransition } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from '../ui/button'
@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
 import { deleteFileFromUploadthing } from '@/server/actions/uploadthing'
 
-const CreatePDFQuizForm = () => {
+const CreatePDFQuizForm = ({startTransition} : {startTransition : React.TransitionStartFunction}) => {
 
   const form = useForm<QuizPayload>({ 
     resolver : zodResolver(QuizSchema), 
@@ -26,7 +26,8 @@ const CreatePDFQuizForm = () => {
       questionNum : 1, 
       quizType : "Practice", 
       questionType : "Multiple Choice", 
-      difficulty : "Easy"
+      difficulty : "Easy", 
+      prompt : "",
 
     }
   })
@@ -37,14 +38,18 @@ const CreatePDFQuizForm = () => {
     form.setValue("prompt",pdfText)
   },[pdfText])
   
-  const [isPending,startTransition] = useTransition()
+  
   const router = useRouter()
 
   useEffect(() => { 
     const previous_key = localStorage.getItem("pdfKey")
     
     if (previous_key) { 
-          startTransition(() => {deleteFileFromUploadthing(previous_key)})
+          startTransition(() => {
+            deleteFileFromUploadthing(previous_key).then(() => { 
+              localStorage.removeItem("pdfKey")
+            })
+          })
     }
   },[])
   const queryClient = useQueryClient()
@@ -167,7 +172,7 @@ const CreatePDFQuizForm = () => {
                     )}
                 />
        
-            <Button className="w-full" disabled={isPending}>{isPending ? <div className="flex items-center gap-2"><ClipLoader size={15} /> Creating... </div> : <><Layers /> Create Quiz</>}</Button>
+            <Button className="w-full"><Layers /> Create Quiz</Button>
             </> : <>
               <Dropzone onPdfDrop={(text,name) => {
                       setPdfText(text) 

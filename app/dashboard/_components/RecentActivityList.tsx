@@ -10,7 +10,7 @@ import React from 'react'
 
 const RecentActivityList = ({attempts} : {attempts :{id : string , quizName : string | null , score : number , createdAt : Date}[]}) => {
   return (
-    <MotionDiv variants={containerVariants} animate={"animate"} initial={"initial"} className='flex flex-col gap-3'>
+    <MotionDiv variants={containerVariants} animate={"animate"} initial={"initial"} className='flex flex-col gap-3 min-h-[400px]'>
           {
             attempts.map(({id,quizName,score,createdAt}) => <MotionDiv variants={childVariants}  className='flex justify-between bg-muted rounded-lg px-3 py-3' key={id}>
                 <div>

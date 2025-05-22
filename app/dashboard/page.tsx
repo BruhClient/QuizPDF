@@ -5,7 +5,7 @@ import QuizWrapper from "./_components/QuizWrapper";
 
 
 
-async function Dashboard() {
+function Dashboard() {
     return ( <div className="px-6 space-y-5 py-3">
         <div className="flex gap-2">
             <div className="text-3xl font-semibold">
