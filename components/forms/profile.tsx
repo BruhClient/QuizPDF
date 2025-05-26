@@ -1,4 +1,4 @@
-
+"use client"
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
@@ -10,6 +10,7 @@ import { EditProfilePayload, EditProfileSchema } from "@/schema/auth/edit-profil
 import { editProfile } from "@/server/actions/auth/edit-profile";
 import { useSession } from "next-auth/react";
 import {ClipLoader} from "react-spinners"
+import { showSuccessToast } from "@/lib/toast";
 
 
  
@@ -35,6 +36,7 @@ const EditProfileForm = () => {
         startTransition(() => {
             editProfile(values).then(() => { 
                 update()
+                showSuccessToast("Profile Changed")
 
             })
         })
@@ -51,7 +53,7 @@ const EditProfileForm = () => {
                                     Username
                                 </FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="jsmith"/>
+                                    <Input {...field}   placeholder="jsmith"/>
                                     
                                 </FormControl>
                             
@@ -85,7 +87,7 @@ const EditProfileForm = () => {
                             
                         )}
                     />
-
+            
                 <Button className="w-full" disabled={isPending}>{isPending ? <div className="flex gap-2 items-center"><ClipLoader size={15} /> Saving Changes... </div> : "Save Changes"}</Button>
         </form>
 

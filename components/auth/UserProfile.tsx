@@ -106,19 +106,26 @@ function UserProfile() {
             
             
             
-            
-
+           
+               
                 <Dialog>
                     <DialogTrigger asChild>
-                        <DropdownMenuItem onSelect={(e) => e.preventDefault()}><Settings /> Account settings</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                        <Settings /> Account settings
+                        </DropdownMenuItem>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="z-50 pointer-events-auto">
                         <DialogHeader>
-                            <DialogTitle className="flex gap-2 items-center"><Settings /> Account settings</DialogTitle>
-                            <DialogDescription>Make changes to your account here</DialogDescription>
+                        <DialogTitle className="flex gap-2 items-center">
+                            <Settings /> Account settings
+                        </DialogTitle>
+                        <DialogDescription>
+                            Make changes to your account here
+                        </DialogDescription>
                         </DialogHeader>
-                        <ProfileImageUploader initialImage={user.image}/>
-                        <EditProfileForm/>
+
+                        <ProfileImageUploader initialImage={user.image} />
+                        <EditProfileForm />
                     </DialogContent>
                 </Dialog>
                 
