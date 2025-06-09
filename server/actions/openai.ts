@@ -1,6 +1,6 @@
 "use server";
 
-import { BATCH_SIZE, SYSTEM_QUESTION_PROMPT } from "@/data/constants";
+import { SYSTEM_QUESTION_PROMPT } from "@/data/constants";
 import { env } from "@/data/env/server";
 import { QuizPayload } from "@/schema/CreateQuiz";
 import OpenAI from "openai";
@@ -9,45 +9,33 @@ const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
 });
 
-// Split text into chunks of up to maxLength characters (based on words)
-function chunkText(text: string, maxLength: number): string[] {
+// Simple chunker: split into fixed-length chunks by words
+function chunkText(text: string, maxWords: number): string[] {
   const words = text.split(/\s+/);
   const chunks: string[] = [];
-  let currentChunk = "";
 
-  for (const word of words) {
-    if ((currentChunk + " " + word).trim().length > maxLength) {
-      if (currentChunk.trim().length > 0) chunks.push(currentChunk.trim());
-      currentChunk = word;
-    } else {
-      currentChunk += " " + word;
-    }
+  for (let i = 0; i < words.length; i += maxWords) {
+    chunks.push(words.slice(i, i + maxWords).join(" "));
   }
 
-  if (currentChunk.trim().length > 0) chunks.push(currentChunk.trim());
   return chunks;
 }
 
-// Safe JSON parser fallback
+// Try to parse OpenAI's response as a list of questions
 function tryParseQuestions(raw: string): any[] {
   try {
     const json = JSON.parse(raw);
     if (Array.isArray(json.questions)) return json.questions;
   } catch {}
 
-  // Try to extract embedded "questions" array
   const match = raw.match(/"questions"\s*:\s*(\[[\s\S]+?\])/);
   if (match) {
     try {
       const questions = JSON.parse(match[1]);
       if (Array.isArray(questions)) return questions;
-    } catch(error) {
-
-      console.log(error)
-    }
+    } catch {}
   }
 
-  // Final fallback: try to wrap in JSON if needed
   try {
     const wrapped = `{${raw.split(/^{|}$/).join("")}}`;
     const json = JSON.parse(wrapped);
@@ -58,24 +46,13 @@ function tryParseQuestions(raw: string): any[] {
   return [];
 }
 
-// Prompt variations to reduce repetition
-const variationPrompts = [
-  "Ask conceptual and analytical questions.",
-  "Focus on definitions and key terms.",
-  "Include real-world application-based questions.",
-  "Use indirect or inferential questions.",
-  "Include tricky distractors in the options.",
-  "Ask questions that test understanding, not recall.",
-];
-
-export async function generateQuestionsFromOpenAi(options: QuizPayload,pdf = false ) {
+// Main quiz generation function
+export async function generateQuestionsFromOpenAi(options: QuizPayload) {
   const { prompt, questionNum, questionType, difficulty } = options;
 
   try {
-    const chunks = chunkText(prompt, 1000);
-    const titleChunk = chunkText(prompt, 100)[0] || "General Topic";
-    
-    // 1. Generate quiz title
+    // === 1. Generate Quiz Title ===
+    const titleChunk = prompt.slice(0, 300); // Keep it short for title generation
     const titleRes = await openai.chat.completions.create({
       model: "gpt-4-turbo",
       messages: [
@@ -92,30 +69,31 @@ export async function generateQuestionsFromOpenAi(options: QuizPayload,pdf = fal
       max_tokens: 50,
     });
 
-    const title = titleRes.choices[0].message.content?.trim() || "Untitled Quiz";
+    const title =
+      titleRes.choices[0].message.content?.trim() || "Untitled Quiz";
 
-    // 2. Calculate number of batches
-    const batchCount = Math.ceil(questionNum / BATCH_SIZE);
-    
+    // === 2. Chunk input text ===
+    const chunks = chunkText(prompt, 300); // Split every ~300 words
+    const variationPrompts = [
+      "Ask conceptual and analytical questions.",
+      "Focus on definitions and key terms.",
+      "Include real-world application-based questions.",
+      "Use indirect or inferential questions.",
+      "Include tricky distractors in the options.",
+      "Ask questions that test understanding, not recall.",
+    ];
 
-    // 3. Generate questions with varied prompts
+    // === 3. Generate Questions ===
     const responses = await Promise.all(
-      Array.from({ length: batchCount }).map((_, i) => {
-        const isLast = i === batchCount - 1;
-        const remaining = questionNum - i * BATCH_SIZE;
-        const numQuestions = isLast ? remaining : BATCH_SIZE;
-
-   
-        const chunk = chunks[i % chunks.length];
-
-        const variant = variationPrompts[i % chunks.length]
+      chunks.map((chunk, index) => {
+        const variation = variationPrompts[index % variationPrompts.length];
         return openai.chat.completions.create({
           model: "gpt-4-turbo",
           messages: [
             { role: "system", content: SYSTEM_QUESTION_PROMPT },
             {
               role: "user",
-              content: `Generate ${numQuestions} ${questionType} questions from the following educational text. Use difficulty level: "${difficulty}". ${variant} .Return only valid JSON.\n\n"${chunk}"`,
+              content: `Generate ${questionNum} ${questionType} questions from the following text. Use difficulty level: "${difficulty}". ${variation} Return only valid JSON with a "questions" array.\n\n"${chunk}"`,
             },
           ],
           temperature: 0.7,
@@ -124,41 +102,29 @@ export async function generateQuestionsFromOpenAi(options: QuizPayload,pdf = fal
       })
     );
 
-    
-    // 4. Parse and collect all questions
+    // === 4. Parse Questions ===
     const allQuestions: any[] = [];
-
     for (const res of responses) {
       const content = res.choices[0].message.content || "";
-      const questions = tryParseQuestions(content);
-      allQuestions.push(...questions);
+      const parsed = tryParseQuestions(content);
+      allQuestions.push(...parsed);
     }
 
-    if (questionNum !== allQuestions.length) { 
-      if (pdf) { 
-        return {
-        error : "Cound not generate enough questions . Please choose a lower question amount or upload another PDF "
-      };
-      }
+    if (allQuestions.length === 0) {
       return {
-        error : "Cound not generate enough questions . Please be more desciptive with your prompts "
+        error:
+          "Could not generate any questions. Try a more descriptive prompt.",
       };
-    
     }
 
-    
     return {
       title,
-      questions: allQuestions.slice(0, questionNum), // Limit to exact number
+      questions: allQuestions.slice(0, questionNum),
     };
   } catch (error: any) {
     if (error?.status === 429) {
-      return {
-        error : "RATE_LIMIT_EXCEEDED"
-      };
+      return { error: "RATE_LIMIT_EXCEEDED" };
     }
-    return {
-        error : "Failed to train quiz . Please try again"
-    };;
+    return { error: "Failed to generate quiz. Please try again." };
   }
 }
